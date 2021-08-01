@@ -36,7 +36,7 @@ const Clicker = () => {
 
       <section>
         <button onClick={getPosts}>Load data</button>
-        {post && JSON.stringify(post)}
+        <p>{post && JSON.stringify(post)}</p>
       </section>
 
     </>
