@@ -2,41 +2,52 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const Clicker = () => {
+
   const [post, setPostData] = useState(null);
   const [checkboxState, toggleCheckbox] = useState(false);
   const [counter, setCounter] = useState(0);
+
+  const limit = 5;
+
   const handleClick = (n) => {
-    setCounter(counter + n);
-    const state = counter + n > 5;
+    const state = counter + n > limit;
     toggleCheckbox(state);
+    setCounter(counter + n);
   }
 
   const getPosts = async () => {
     const { data } = await axios.get('https://jsonplaceholder.typicode.com/posts/1');
     await setPostData(data);
-    console.log(data)
   }
   return (
     <>
-      <h1 aria-label="title">Counter: {counter}</h1>
+      <h1>Counter: {counter}</h1>
 
       <section>
 
         <p>
-          <button aria-label="button" onClick={() => handleClick(-1)}>decrement</button>
-          <button aria-label="button" onClick={() => handleClick(1)}>increment</button>
+          <button onClick={() => handleClick(-1)}>decrement</button>
+          <button onClick={() => handleClick(1)}>increment</button>
         </p>
 
-        <label>Switch on if counter > 5</label>
-        <input type="checkbox" checked={checkboxState} />
+        <label>Switch on if counter > {limit}</label>
+        <input type="checkbox" readOnly checked={checkboxState} />
 
       </section>
 
       <hr />
 
       <section>
+
         <button onClick={getPosts}>Load data</button>
-        <p>{post && JSON.stringify(post)}</p>
+        {post && 
+          <code>
+            <pre>
+              {JSON.stringify(post, undefined, 2)}
+            </pre>
+          </code>
+        }
+
       </section>
 
     </>

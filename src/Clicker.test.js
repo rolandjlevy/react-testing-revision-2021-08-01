@@ -1,15 +1,16 @@
 import React from 'react';
-import { render, screen, configure } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import {
+  getByRole,
+  queryByRole,
+  render,
+  screen,
+  waitFor
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
 
 import Clicker from './Clicker';
-
-beforeEach(() => {
-  configure({
-    throwSuggestions: true,
-  })
-});
 
 describe('Should check changing values and events resulting from clicks', () => {
 
@@ -23,20 +24,17 @@ describe('Should check changing values and events resulting from clicks', () => 
 
     screen.queryByRole('heading', { name: 'Counter: 0' });
 
-    const buttons = screen.queryAllByRole('button');
-
     // click the increment button
-    userEvent.click(buttons[0]);
-
-    // WHY DOESN'T THIS WORK?
-    // userEvent.click(
-    //   screen.queryByRole('button', { name: 'increment' })
-    // );
+    userEvent.click(
+      screen.queryByRole('button', { name: 'increment' })
+    );
 
     screen.queryByRole('heading', { name: 'Counter: 1' });
 
     // click the decrement button
-    userEvent.click(buttons[1]);
+    userEvent.click(
+      screen.queryByRole('button', { name: 'decrement' })
+    );
 
     screen.queryByRole('heading', { name: 'Counter: 0' });
 
@@ -46,7 +44,30 @@ describe('Should check changing values and events resulting from clicks', () => 
 
   });
 
-  it('should load data from the jsonplaceholder API', async () => {
+  it('should make a single call to json placeholder API when the Load data button is clicked. Should display a single post after the click', async () => {
+
+    const data = {
+      userId: 1,
+      id: 1,
+      title: 'Mock title',
+      body: 'Mock body text',
+    }
+
+    const mockAxios = jest.spyOn(axios, 'get').mockResolvedValueOnce({ data });
+    
+    render(<Clicker />);
+
+    // Click the button to trigger the request for the post
+    userEvent.click(
+      screen.getByRole('button', { name: 'Load data' })
+    );
+
+    // Waits for the mock API call to resolve
+    await waitFor(() => expect(mockAxios).toHaveBeenCalledTimes(1));
+
+    expect(mockAxios).toHaveBeenCalledWith(
+      'https://jsonplaceholder.typicode.com/posts/1',
+    );
 
   })
 });
