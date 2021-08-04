@@ -26,8 +26,8 @@ const Clicker = () => {
       <section>
 
         <p>
-          <button onClick={() => handleClick(-1)}>decrement</button>
-          <button onClick={() => handleClick(1)}>increment</button>
+          <button  aria-label='decrement' onClick={() => handleClick(-1)}>decrement</button>
+          <button  aria-label='increment' onClick={() => handleClick(1)}>increment</button>
         </p>
 
         <label>Switch on if counter > {limit}</label>
@@ -39,13 +39,18 @@ const Clicker = () => {
 
       <section>
 
-        <button onClick={getPosts}>Load data</button>
+        <button  aria-label='load-data' onClick={getPosts}>Load data</button>
+
         {post && 
-          <code>
-            <pre>
-              {JSON.stringify(post, undefined, 2)}
-            </pre>
-          </code>
+          <>
+            <code>
+              <pre>
+                {JSON.stringify(post, undefined, 2)}
+              </pre>
+            </code>
+            <h4>Title: {post.title}</h4>
+            <p>Body: {post.body}</p>
+          </>
         }
 
       </section>
