@@ -1,11 +1,10 @@
 import React from 'react';
 import '@testing-library/jest-dom';
 import {
-  getByRole,
-  queryByRole,
   render,
   screen,
-  waitFor
+  waitFor,
+  logRoles
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
@@ -18,29 +17,26 @@ describe('Should check changing values and events resulting from clicks', () => 
     jest.clearAllMocks();
   });
 
-  xit('Should check that header and buttons are being clicked and the counter is changing', () => {
+  it('Should check that header and buttons are being clicked and the counter is changing', () => {
 
-    render(<Clicker />);
+    const { container } = render(<Clicker />);
+    logRoles(container);
 
-    screen.queryByRole('heading', { name: 'Counter: 0' });
+    screen.getByRole('heading', { name: 'Counter: 0' });
 
     // click the increment button
     userEvent.click(
-      screen.queryByRole('button', { name: 'increment' })
+      screen.getByRole('button', { name: 'increment' })
     );
 
-    screen.queryByRole('heading', { name: 'Counter: 1' });
+    screen.getByRole('heading', { name: 'Counter: 1' });
 
     // click the decrement button
     userEvent.click(
-      screen.queryByRole('button', { name: 'decrement' })
+      screen.getByRole('button', { name: 'decrement' })
     );
 
-    screen.queryByRole('heading', { name: 'Counter: 0' });
-
-    // expect(
-    //   screen.queryByRole('heading')
-    // ).toHaveTextContent(/counter: 1/i);
+    screen.getByRole('heading', { name: 'Counter: 0' });
 
   });
 
@@ -68,6 +64,9 @@ describe('Should check changing values and events resulting from clicks', () => 
     expect(mockAxios).toHaveBeenCalledWith(
       'https://jsonplaceholder.typicode.com/posts/1',
     );
+
+    screen.getByRole('heading', { name: 'Title: Mock title' });
+    screen.getByRole('heading', { name: 'Body: Mock body text' });
 
   })
 });

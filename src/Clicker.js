@@ -16,6 +16,7 @@ const Clicker = () => {
   }
 
   const getPosts = async () => {
+    await setPostData(null);
     const { data } = await axios.get('https://jsonplaceholder.typicode.com/posts/1');
     await setPostData(data);
   }
@@ -26,8 +27,8 @@ const Clicker = () => {
       <section>
 
         <p>
-          <button  aria-label='decrement' onClick={() => handleClick(-1)}>decrement</button>
-          <button  aria-label='increment' onClick={() => handleClick(1)}>increment</button>
+          <button onClick={() => handleClick(-1)}>decrement</button>
+          <button onClick={() => handleClick(1)}>increment</button>
         </p>
 
         <label>Switch on if counter > {limit}</label>
@@ -49,7 +50,7 @@ const Clicker = () => {
               </pre>
             </code>
             <h4>Title: {post.title}</h4>
-            <p>Body: {post.body}</p>
+            <h5>Body: {post.body}</h5>
           </>
         }
 
