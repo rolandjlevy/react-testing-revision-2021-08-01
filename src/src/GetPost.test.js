@@ -7,37 +7,15 @@ import {
   logRoles
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import axios from 'axios';
 
-import Clicker from './Clicker';
+import GetPost from './GetPost';
 
 describe('Should check changing values and events resulting from clicks', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-  });
-
-  it('Should check that header and buttons are being clicked and the counter is changing', () => {
-
-    const { container } = render(<Clicker />);
-    logRoles(container);
-
-    screen.getByRole('heading', { name: 'Counter: 0' });
-
-    // click the increment button
-    userEvent.click(
-      screen.getByRole('button', { name: 'increment' })
-    );
-
-    screen.getByRole('heading', { name: 'Counter: 1' });
-
-    // click the decrement button
-    userEvent.click(
-      screen.getByRole('button', { name: 'decrement' })
-    );
-
-    screen.getByRole('heading', { name: 'Counter: 0' });
-
   });
 
   it('should make a single call to json placeholder API when the Load data button is clicked. Should display a single post after the click', async () => {
@@ -51,11 +29,11 @@ describe('Should check changing values and events resulting from clicks', () => 
 
     const mockAxios = jest.spyOn(axios, 'get').mockResolvedValueOnce({ data });
     
-    render(<Clicker />);
+    render(<GetPost />);
 
     // Click the button to trigger the request for the post
     userEvent.click(
-      screen.getByRole('button', { name: /load-data/i })
+      screen.getByRole('button', { name: 'Load data'})
     );
 
     // Waits for the mock API call to resolve
